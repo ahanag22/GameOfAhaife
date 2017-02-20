@@ -15,6 +15,7 @@ canvas.style.height = canvas.height;
 var grid = [];
 var gridNext = [];
 
+// Adding a fake line.
 // create default grid array
 // sudo random noise
 for (var x = 0; x < gridWidth; x++) {
