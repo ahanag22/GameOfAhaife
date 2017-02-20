@@ -3,28 +3,26 @@ var canvas = document.getElementById('gameCanvas');
 var ctx = canvas.getContext('2d')
 
 // canvas and grid size defaults
-var gridWidth = 300;
-var gridHeight = 150;
+var theWidth = 300;
+var theHeight = 150;
 var gridSquareWidth = 8;
 
-canvas.width = gridWidth * gridSquareWidth;
-canvas.height = gridHeight * gridSquareWidth;
+canvas.width = theWidth * gridSquareWidth;
+canvas.height = theHeight * gridSquareWidth;
 canvas.style.width = canvas.width;
 canvas.style.height = canvas.height;
 
 var grid = [];
 var gridNext = [];
 
-// Adding a fake line.
+
 // create default grid array
-// sudo random noise
-for (var x = 0; x < gridWidth; x++) {
+
+for (var x = 0; x < theWidth; x++) {
 	grid[x] = [];
 	gridNext[x] = [];
-	for (var y = 0; y < gridHeight; y++) {
-		//grid[x][y] = [];
-		//gridNext[x][y] = []
-
+	for (var y = 0; y < theHeight; y++) {
+		
 		var rand = Math.floor((Math.random() * 100) + 1);
 
 		if (rand > 20 && rand < 30) {
@@ -43,9 +41,9 @@ for (var x = 0; x < gridWidth; x++) {
 
 // life init grid
 function life(){
-	// touch each grid coord
-	for (var x = 0; x < gridWidth; x++) {
-		for (var y = 0; y < gridHeight; y++) {
+	
+	for (var x = 0; x < theWidth; x++) {
+		for (var y = 0; y < theHeight; y++) {
 
 			// counts alive or dead for neighbours
 			
@@ -53,15 +51,16 @@ function life(){
 			var count_black = countNearby_black(x,y);
 
 			if(grid[x][y] == 0){
+				// no life is born if red and black count 3
 				if(count_black == 3 && count_red == 3){
 					gridNext[x][y] = 0;
 				}
 				else if(count_red == 3 ){
-					// life is born
+					// red life is born
 					gridNext[x][y] = 1;
 				}
 				else if(count_black == 3){
-					// life is born
+					// black life is born
 					gridNext[x][y] = 2;
 				}
 				else{
@@ -69,12 +68,7 @@ function life(){
 				}
 				
 			}else {
-				//if((count_black < 2 || count_black > 3 )&&(count_red < 2 || count_red > 3)){
-					// underpopulation & overpopulation
-					//gridNext[x][y] = 0;
-				//}//else if((count_black == 2 || count_black == 3) && (count_red == 2 || count_red== 3)){
-					//gridNext[x][y] = 3;
-				//}
+				
 				if ((count_red == 2 || count_red == 3) && (count_black == 2 || count_black == 3)){
 					gridNext[x][y] = 0;
 					
@@ -96,13 +90,7 @@ function life(){
 	}
 	// replace old grid with new population grid
 	grid = gridNext;
-	/**for (var x = 0; x < gridWidth; x++) {
-		for (var y = 0; y < gridHeight; y++) {
-	    gridNext[x][y] = 0;
-		}
-		
-	}**/
-};
+	};
 
 // count grid neighbours
 function countNearby_red(x,y){
@@ -122,7 +110,7 @@ function countNearby_red(x,y){
 	function counter(x,y){
 		// if x and y on the grid
 		
-		if(x > 0 && x < gridWidth && y > 0 && y < gridHeight){
+		if(x > 0 && x < theWidth && y > 0 && y < theHeight){
 			if (grid[x][y] == 1) {
 				count++;
 			}	
@@ -152,7 +140,7 @@ function countNearby_black(x,y){
 	function counter(x,y){
 		// if x and y on the grid
 		
-		if(x > 0 && x < gridWidth && y > 0 && y < gridHeight){
+		if(x > 0 && x < theWidth && y > 0 && y < theHeight){
 			if (grid[x][y] == 2) {
 				count++;
 			}	
@@ -176,24 +164,18 @@ function update(dt) {
 };
 
 function draw() {
-// clear canvas
-   // var r_a = 0.3; 
-    //ctx.fillStyle = "rgba(32, 45, 21, " + r_a + ")";
-	//ctx.fillStyle = "grey";
-	//ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-	for (var x = 0; x < gridWidth; x++) {
-		for (var y = 0; y < gridHeight; y++) {
+
+	for (var x = 0; x < theWidth; x++) {
+		for (var y = 0; y < theHeight; y++) {
 
 			if (grid[x][y] == 1) {
-				//ctx.fillStyle = "#FF0000";
-				//var r_a = 0.5; 
+				
                 ctx.fillStyle = "red";
 			}
 			
 		   else if (grid[x][y] == 2) {
-				//ctx.fillStyle = "#FF0000";
-				//var r_a = 0.5; 
+				
                 ctx.fillStyle =  "black";
 				
 			}
@@ -208,13 +190,6 @@ function draw() {
 	}
 }
 
-/**function getRandomColor() {
-  var length = 6;
-  var chars = '0123456789ABCDEF';
-  var hex = '#';
-  while(length--) hex += chars[(Math.random() * 16) | 0];
-  return hex;
-}**/
 
 // The main game loop
 var lastTime = 0;
